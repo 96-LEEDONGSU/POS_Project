@@ -1,0 +1,14 @@
+.container_custom {
+    width : 500px;
+    height: 600px;
+    background-color: white;
+    border-width : 2px;
+    border-style: solid;
+    border-radius: 10%;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.div_custom {
+    text-align: center;
+}
