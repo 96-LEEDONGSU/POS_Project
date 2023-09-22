@@ -1,16 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post" action="{% url 'myapp:result2' %}">
-        {% csrf_token %}
-        <input type="text" name="user_1" id="user_1">
-        <input type="text" name="user_2" id="user_2">
-        <input type="submit" value="submit">
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+{% comment %} <form class="d-flex" role="search" action="{% url myapp:customerlist%}">
+  <input class="form-control me-6" type="search" placeholder="고객찾기" aria-label="Search" id="searchInput">
+  <button class="btn btn-outline-success" type="submit" onclick="searching_data()">Search</button>
+</form> {% endcomment %}
+<div class="searchBox">
+      <label>수도: <input type="text" id="search" onkeyup="filter()" placeholder="수도를 검색하세요." /></label>
+    </div>
+<script>
+  function filter() {
+        let search = document.getElementById("search").value.toLowerCase();
+        let listInner = document.getElementsById("temp");
+
+        for (let i = 0; i < listInner.length; i++) {
+          city = listInner[i].getElementsByClassName("city");
+          country = listInner[i].getElementsByClassName("country");
+          if (city[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+            country[0].innerHTML.toLowerCase().indexOf(search) != -1
+          ) {
+            listInner[i].style.display = "flex"
+          } else {
+            listInner[i].style.display = "none"
+          }
+        }
+      }
+</script>
+<div>
+  <table class="table" id="dataTable">
+    <thead>
+      <tr>
+        <th scope="col">이름</th>
+        <th scope="col">연락처</th>
+        <th scope="col">주소</th>
+        <th scope="col">기타 메모</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in data %}
+      <tr id="temp">
+        <th scope="row">{{i.c_name}}</th>
+        <td>{{i.c_phone}}</td>
+        <td>{{i.c_address}}</td>
+        <td>{{i.c_memo}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

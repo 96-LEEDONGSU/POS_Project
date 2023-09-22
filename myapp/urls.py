@@ -8,4 +8,6 @@ app_name = 'myapp'
 urlpatterns = [
     path('', views.index, name='index'),
     path('main/', views.loginsuccess, name='loginsuccess'),
+    path('productlist/', views.productlist, name='productlist'),
+    path('customerlist/', views.customerlist, name='customerlist'),
 ]

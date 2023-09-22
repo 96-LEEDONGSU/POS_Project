@@ -8,19 +8,24 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">이름</th>
-        <th scope="col">연락처</th>
-        <th scope="col">주소</th>
-        <th scope="col">기타 메모</th>
+        <th scope="col">상품 이름</th>
+        <th scope="col">판매가</th>
+        <th scope="col">매입가</th>
+        <th scope="col">매입날짜</th>
+        <th scope="col">매입방법</th>
+        <th scope="col">상품종류</th>
+        <th scope="col">상품 개수</th>
       </tr>
     </thead>
     <tbody>
       {% for i in data %}
       <tr>
-        <th scope="row">{{i.c_name}}</th>
-        <td>{{i.c_phone}}</td>
-        <td>{{i.c_address}}</td>
-        <td>{{i.c_memo}}</td>
+        <th scope="row">{{i.Product_name}}</th>
+        <td>{{i.Shop_Product_saleprice}}</td>
+        <td>{{i.Shop_Product_purchaseprice}}</td>
+        <td>{{i.Shop_Product_purchase_route}}</td>
+        <td>{{i.Product_Code}}</td>
+        <td>{{i.Shop_Product_stockcount}}</td>
       </tr>
       {% endfor %}
     </tbody>

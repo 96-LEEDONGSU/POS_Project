@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+{% comment %} <form class="d-flex" role="search" action="{% url myapp:customerlist%}">
+  <input class="form-control me-6" type="search" placeholder="고객찾기" aria-label="Search" id="searchInput">
+  <button class="btn btn-outline-success" type="submit" onclick="searching_data()">Search</button>
+</form> {% endcomment %}
+<div class="searchBox">
+      <label>수도: <input type="text" id="search" onkeyup="filter()" placeholder="수도를 검색하세요." /></label>
+    </div>
+<script>
+  function filter() {
+        // HTML 요소를 가져옵니다.
+        const nameElements = document.querySelectorAll('.name');
+
+        // 데이터를 저장할 배열을 생성합니다.
+        const nameData = [];
+
+        // 각 요소에서 텍스트를 추출하여 배열에 추가합니다.
+        nameElements.forEach(element => {
+          nameData.push(element.textContent);
+        });
+
+        for (let i=0; i<nameData.length; i++){
+          if nameData[i]
+        }
+
+        // 배열에 저장된 데이터 출력
+        console.log(nameData);
+        let search = document.getElementById("search").value.toLowerCase();
+        let listInner = document.getElementById("temp").getElementsByTagName("tr");
+
+        for (let i = 0; i < listInner.length; i++) {
+          name = listInner[i].getElementsByClassName("name");
+          phone = listInner[i].getElementsByClassName("phone");
+          address = listInner[i].getElementsByClassName("address");
+          memo = listInner[i].getElementsByClassName("memo");
+          console.log(name)
+          if (name[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+            phone[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+            address[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+            memo[0].innerHTML.toLowerCase().indexOf(search) != -1
+          ) {
+            listInner[i].style.backgroundColor = "yellow"
+            console.log(listInner[i]);
+          } else {
+            listInner[i].style.backgroundColor = "black"
+            console.log(listInner[i]);
+          }
+        }
+      }
+</script>
+<div>
+  <table class="table" id="dataTable">
+    <thead>
+      <tr>
+        <th scope="col">이름</th>
+        <th scope="col">연락처</th>
+        <th scope="col">주소</th>
+        <th scope="col">기타 메모</th>
+      </tr>
+    </thead>
+    <tbody id="temp">
+      {% for i in data %}
+      <tr>
+        <th scope="row" class="name">{{i.c_name}}</th>
+        <td class="phone">{{i.c_phone}}</td>
+        <td class="address">{{i.c_address}}</td>
+        <td class="memo">{{i.c_memo}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
