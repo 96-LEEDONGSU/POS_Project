@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
+from django.contrib import messages
 import pymysql
 
 # Create your views here.
@@ -24,6 +25,11 @@ def customerlist(request):
     context = {'data' : select_all_data()}
     return render(request, 'customer_list.html', context)
 
+
+def customer_modify(request, id):
+    context = {'data' : id}
+    return render(request, 'customer_modify.html', context)
+        
 
 def select_product_list():
     conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
