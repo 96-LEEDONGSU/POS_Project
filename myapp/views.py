@@ -27,7 +27,7 @@ def customerlist(request):
 
 
 def customer_modify(request, id):
-    context = {'data' : id}
+    context = {'data1' : id, 'data2' : select_all_data()}
     return render(request, 'customer_modify.html', context)
         
 

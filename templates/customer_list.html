@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <div class="searchBox">
   <input type="text" id="targetInput" placeholder="아무거나 검색하세요." />
   <button id = "searchButton">확인</button>
 </div>
+
 <script>
   // 버튼 요소를 가져옵니다.
   var searchButton = document.getElementById('searchButton');
   var targetInput = document.getElementById('targetInput');
-
   targetInput.addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {
       searching();
     }
   });
-
   searchButton.addEventListener('click', searching);
+  
   function searching() {
     resetSearchResults();
     var targetInputValue = document.getElementById('targetInput').value.toLowerCase();
@@ -64,7 +65,7 @@
         <td class="phone">{{i.c_phone}}</td>
         <td class="address">{{i.c_address}}</td>
         <td class="memo">{{i.c_memo}}</td>
-        <td><a href="customerlist/modify/{{i.c_idx}}/">수정</td>
+        <td><a href="/modify/{{i.c_idx}}/">수정</td>
       </tr>
       {% endfor %}
     </tbody>

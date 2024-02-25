@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
 <div>
-  {% for i in data %}
-  {{i}}
-  {% endfor %}
+  {% for i in data2 %}
+    {% if data1|add:"0" == i.c_idx|add:"0" %}
+      {{i.c_name}}
+      {{i.c_idx}}
+      {{i.c_address}}
+      {{i.c_phone}}
+      {{i.c_memo}}
     <form>
         <label>이름</label>
-        <input type="text" class="form-control" name="c_name" id="c_name" value="" style="width:300px"></input>
+        <input type="text" class="form-control" name="c_name" id="c_name" value="{{i.c_name}}" style="width:300px"></input>
         <label>핸드폰번호</label>
-        <input type="text" class="form-control" name="c_phone" id="c_phone" value="" style="width:300px"></input>
+        <input type="text" class="form-control" name="c_phone" id="c_phone" value="{{i.c_phone}}" style="width:300px"></input>
         <label>주소</label>
-        <input type="text" class="form-control" name="c_address" id="c_address" value="" style="width:300px"></input>
+        <input type="text" class="form-control" name="c_address" id="c_address" value="{{i.c_address}}" style="width:300px"></input>
         <label>메모</label>
-        <input type="text" class="form-control" name="c_memo" id="c_memo" value="" style="width:300px"></input>
+        <input type="text" class="form-control" name="c_memo" id="c_memo" value="{{i.c_memo}}" style="width:300px"></input>
         <button type="submit" class="btn btn-primary" style="width:200px">수정</button>
         <button>취소</button>
     </form>
   </div>
+  {% endif %}
+  {% endfor %}
 {% endblock %}
