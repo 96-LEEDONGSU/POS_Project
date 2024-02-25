@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <form action="{% url 'myapp:addMember'%}" method="POST" id ="addForm">
+      {% csrf_token %}
+        <label>이름</label>
+        <input type="text" class="form-control" name="c_name" id="c_name" value="" style="width:300px"></input>
+        <label>핸드폰번호</label>
+        <input type="text" class="form-control" name="c_phone" id="c_phone" value="" style="width:300px"></input>
+        <label>주소</label>
+        <input type="text" class="form-control" name="c_address" id="c_address" value="" style="width:300px"></input>
+        <label>메모</label>
+        <input type="text" class="form-control" name="c_memo" id="c_memo" value="" style="width:300px"></input>
+        <button type="submit" class="btn btn-primary" style="width:200px">추가</button>
+        <button type="button" class="btn btn-primary" style="width:200px">취소</button>
+    </form>
+  </div>
+
+<script>
+  document.getElementById("modifyForm").addEventListener("submit", function(event) {
+    var confirmation = confirm("정말 추가하시겠습니까?");
+    if (!confirmation) {
+      event.preventDefault();
+    }
+  });
+</script>
+{% endblock %}

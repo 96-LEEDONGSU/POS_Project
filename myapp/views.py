@@ -29,6 +29,9 @@ def customerlist(request):
 def customer_modify(request, id):
     context = {'data1' : id, 'data2' : select_all_data()}
     return render(request, 'customer_modify.html', context)
+
+def customer_add(request):
+    return render(request, 'add_member.html')
         
 
 def select_product_list():
@@ -66,3 +69,27 @@ def select_all_data():
         return_data.append(row)
     conn.close()
     return return_data
+
+#login_info = [request.POST['username'], request.POST['password']]
+
+def modifyMemberData(request):
+    modify_data = [request.POST['c_name'], request.POST['c_phone'], request.POST['c_address'], request.POST['c_memo'], request.POST['c_idx']]
+    conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
+    cur = conn.cursor()
+    sql = f"UPDATE customer SET c_name = \'{modify_data[0]}\', c_phone = \'{modify_data[1]}\', c_address = \'{modify_data[2]}\', c_memo = \'{modify_data[3]}\' WHERE c_idx = {modify_data[4]};"
+    cur.execute(sql)
+    conn.commit()
+    conn.close()
+    context = {'data' : select_all_data()}
+    return render(request, 'customer_list.html', context)
+
+def addMember(request):
+    modify_data = [request.POST['c_name'], request.POST['c_phone'], request.POST['c_address'], request.POST['c_memo']]
+    conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
+    cur = conn.cursor()
+    sql = f"INSERT INTO customer(c_name, c_phone, c_address, c_memo) VALUES (\'{modify_data[0]}\', \'{modify_data[1]}\', \'{modify_data[2]}\', \'{modify_data[3]}\')"
+    cur.execute(sql)
+    conn.commit()
+    conn.close()
+    context = {'data' : select_all_data()}
+    return render(request, 'customer_list.html', context)
