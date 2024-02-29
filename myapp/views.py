@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.contrib import messages
 import pymysql
 
-# Create your views here.
 def index(request):
     return render(request, 'login_page.html')
 
@@ -31,7 +30,37 @@ def customer_modify(request, id):
     return render(request, 'customer_modify.html', context)
 
 def customer_add(request):
-    return render(request, 'add_member.html')
+    if request.method == 'POST':
+        name = request.POST.get('c_name')
+        phone = request.POST.get('c_phone')
+        address = request.POST.get('c_address')
+        memo = request.POST.get('c_memo')
+        conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
+        cur = conn.cursor()
+        sql = f"INSERT INTO customer(c_name, c_phone, c_address, c_memo) VALUES (\'{name}\', \'{phone}\', \'{address}\', \'{memo}\')"
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+        return redirect('/customerlist/')
+    else:
+        return render(request, 'add_member.html')
+    
+def productadd(request):
+    if request.method == 'POST':
+        productName = request.POST.get('Product_name')
+        salePrice = request.POST.get('Shop_Product_saleprice')
+        purchasePrice = request.POST.get('Shop_Product_purchaseprice')
+        purchaseRoute = request.POST.get('Shop_Product_purchase_route')
+        stockCount = request.POST.get('Shop_Product_stockcount')
+        conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
+        cur = conn.cursor()
+        sql = f"INSERT INTO customer(Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount) VALUES (\'{productName}\', \'{salePrice}\', \'{purchasePrice}\', \'{purchaseRoute}\', \'{stockCount}\')"
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+        return redirect('/customerlist/')
+    else:
+        return render(request, 'add_member.html')
         
 
 def select_product_list():
@@ -40,7 +69,6 @@ def select_product_list():
     cur.execute("SELECT Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchasedate, Shop_Product_purchase_route, Product_Code, Shop_Product_stockcount from shop_product")
     result = cur.fetchall()
     return_data = []
-    
     for idx, value in enumerate(result):
         row = {'Product_name' : value[0],
                        'Shop_Product_saleprice' : value[1],
@@ -59,7 +87,6 @@ def select_all_data():
     cur.execute("SELECT c_idx, c_name, c_phone, c_address, c_memo from customer")
     result = cur.fetchall()
     return_data = []
-
     for idx, value in enumerate(result):
         row = {'c_idx' : value[0],
                        'c_name' : value[1],
@@ -69,8 +96,6 @@ def select_all_data():
         return_data.append(row)
     conn.close()
     return return_data
-
-#login_info = [request.POST['username'], request.POST['password']]
 
 def modifyMemberData(request):
     modify_data = [request.POST['c_name'], request.POST['c_phone'], request.POST['c_address'], request.POST['c_memo'], request.POST['c_idx']]
@@ -93,3 +118,15 @@ def addMember(request):
     conn.close()
     context = {'data' : select_all_data()}
     return render(request, 'customer_list.html', context)
+
+def customer_delete(request, c_idx):
+    conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
+    cur = conn.cursor()
+    sql = f"DELETE FROM customer WHERE c_idx = {c_idx}"
+    cur.execute(sql)
+    #테스트용 코드
+    row_count = cur.rowcount
+    print("업데이트 행 수 : ", row_count)
+    conn.commit()
+    conn.close()
+    return redirect('/customerlist/')

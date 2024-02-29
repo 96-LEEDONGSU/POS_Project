@@ -16,12 +16,16 @@
         <input type="text" class="form-control" name="c_memo" id="c_memo" value="{{i.c_memo}}" style="width:300px"></input>
         <button type="submit" class="btn btn-primary" style="width:200px">수정</button>
         <button type="reset" class="btn btn-primary" style="width:200px">되돌리기</button>
-        <button type="button" class="btn btn-primary" style="width:200px">취소</button>
+        <button type="button" class="btn btn-primary" style="width:200px" onclick="goBack()">취소</button>
     </form>
   </div>
   {% endif %}
   {% endfor %}
 <script>
+  function goBack(){
+    window.history.back();
+  }
+
   document.getElementById("modifyForm").addEventListener("submit", function(event) {
     var confirmation = confirm("정말 수정하시겠습니까?");
     if (!confirmation) {

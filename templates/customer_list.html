@@ -6,7 +6,7 @@
   <button id = "searchButton">확인</button>
 </div>
 
-<a href="/addmember/">추가</a>
+<a href="/add-member/">추가</a>
 
 <script>
   // 버튼 요소를 가져옵니다.
@@ -67,10 +67,22 @@
         <td class="phone">{{i.c_phone}}</td>
         <td class="address">{{i.c_address}}</td>
         <td class="memo">{{i.c_memo}}</td>
+        <td class="memo">{{i.c_idx}}</td>
         <td><a href="/modify/{{i.c_idx}}/">수정</td>
+        <td><a href="#" data-uri="{% url 'myapp:customer_delete' i.c_idx %}" class="delete">삭제</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+<script type="text/javascript">
+  const delete_elements = document.getElementsByClassName("delete");
+  Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+      if(confirm("정말로 삭제하시겠습니까?")) {
+        location.href = this.dataset.uri;
+      };
+    });
+  });
+</script>
 {% endblock %}
