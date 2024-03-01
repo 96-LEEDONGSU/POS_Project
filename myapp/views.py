@@ -47,6 +47,7 @@ def customer_add(request):
     
 def productadd(request):
     if request.method == 'POST':
+        productType = request.POST.get('product_code')
         productName = request.POST.get('Product_name')
         salePrice = request.POST.get('Shop_Product_saleprice')
         purchasePrice = request.POST.get('Shop_Product_purchaseprice')
@@ -54,13 +55,14 @@ def productadd(request):
         stockCount = request.POST.get('Shop_Product_stockcount')
         conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
         cur = conn.cursor()
-        sql = f"INSERT INTO shop_product(Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount) VALUES (\"{productName}\", \"{salePrice}\", \"{purchasePrice}\", \"{purchaseRoute}\", \"{stockCount}\")"
+        sql = f"INSERT INTO shop_product(product_code, Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount) VALUES (\"{productType}\", \"{productName}\", \"{salePrice}\", \"{purchasePrice}\", \"{purchaseRoute}\", \"{stockCount}\")"
         cur.execute(sql)
         conn.commit()
         conn.close()
-        return redirect('/customerlist/')
+        return redirect('/productlist/')
     else:
-        return render(request, 'add_product.html')
+        context = {'data' : select_all_product_code()}
+        return render(request, 'add_product.html', context)
         
 
 def select_product_list():
@@ -78,6 +80,19 @@ def select_product_list():
                        'Shop_Product_stockcount' : value[5]}
         return_data.append(row)
     conn.close()
+    return return_data
+
+def select_all_product_code():
+    conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
+    cur = conn.cursor()
+    cur.execute("SELECT product_code, product_type from product_code")
+    result = cur.fetchall()
+    return_data = []
+    for idx, value in enumerate(result):
+        row = {'productCode' : value[0], 'productType' : value[1]}
+        return_data.append(row)
+    conn.close()
+    print(return_data)
     return return_data
 
 
