@@ -54,13 +54,13 @@ def productadd(request):
         stockCount = request.POST.get('Shop_Product_stockcount')
         conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
         cur = conn.cursor()
-        sql = f"INSERT INTO customer(Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount) VALUES (\'{productName}\', \'{salePrice}\', \'{purchasePrice}\', \'{purchaseRoute}\', \'{stockCount}\')"
+        sql = f"INSERT INTO shop_product(Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount) VALUES (\"{productName}\", \"{salePrice}\", \"{purchasePrice}\", \"{purchaseRoute}\", \"{stockCount}\")"
         cur.execute(sql)
         conn.commit()
         conn.close()
         return redirect('/customerlist/')
     else:
-        return render(request, 'add_member.html')
+        return render(request, 'add_product.html')
         
 
 def select_product_list():

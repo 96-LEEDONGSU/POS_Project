@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <form action="{% url 'myapp:productadd' %}" method="POST" id ="addForm">
+      {% csrf_token %}
+        <label>상품명</label>
+        <input type="text" class="form-control" name="Product_name" id="Product_name" value="" style="width:300px"></input>
+        <label>판매가격</label>
+        <input type="text" class="form-control" name="Shop_Product_saleprice" id="Shop_Product_saleprice" value="" style="width:300px"></input>
+        <label>매입가격</label>
+        <input type="text" class="form-control" name="Shop_Product_purchaseprice" id="Shop_Product_purchaseprice" value="" style="width:300px"></input>
+        <label>매입경로</label>
+        <input type="text" class="form-control" name="Shop_Product_purchase_route" id="Shop_Product_purchase_route" value="" style="width:300px"></input>
+        <label>재고</label>
+        <input type="text" class="form-control" name="Shop_Product_stockcount" id="Shop_Product_stockcount" value="" style="width:300px"></input>
+        <button type="submit" class="btn btn-primary" style="width:200px">추가</button>
+        <button type="button" class="btn btn-primary" style="width:200px" onclick="goBack()">취소</button>
+    </form>
+  </div>
+
+<script>
+  function goBack(){
+    window.history.back();
+  }
+
+  document.getElementById("modifyForm").addEventListener("submit", function(event) {
+    var confirmation = confirm("정말 추가하시겠습니까?");
+    if (!confirmation) {
+      event.preventDefault();
+    }
+  });
+</script>
+{% endblock %}
