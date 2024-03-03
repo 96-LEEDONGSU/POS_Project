@@ -67,8 +67,7 @@
         <td class="phone">{{i.c_phone}}</td>
         <td class="address">{{i.c_address}}</td>
         <td class="memo">{{i.c_memo}}</td>
-        <td class="memo">{{i.c_idx}}</td>
-        <td><a href="/modify/{{i.c_idx}}/">수정</td>
+        <td><a href="/modify_customer/{{i.c_idx}}/">수정</td>
         <td><a href="#" data-uri="{% url 'myapp:customer_delete' i.c_idx %}" class="delete">삭제</td>
       </tr>
       {% endfor %}

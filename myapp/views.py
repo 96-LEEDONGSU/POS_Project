@@ -29,6 +29,27 @@ def customer_modify(request, id):
     context = {'data1' : id, 'data2' : select_all_data()}
     return render(request, 'customer_modify.html', context)
 
+def product_modify(request, id):
+    if request.method == 'POST':
+        productType = request.POST.get('product_code')
+        productName = request.POST.get('Product_name')
+        salePrice = request.POST.get('Shop_Product_saleprice')
+        purchasePrice = request.POST.get('Shop_Product_purchaseprice')
+        purchaseRoute = request.POST.get('Shop_Product_purchase_route')
+        stockCount = request.POST.get('Shop_Product_stockcount')
+        purchaseDate = request.POST.get('Shop_Product_purchasedate')
+        conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
+        cur = conn.cursor()
+        print(purchaseDate)
+        sql = f"UPDATE shop_product SET product_code = \'{productType}\', Product_name = \'{productName}\', Shop_Product_saleprice=\'{salePrice}\', Shop_Product_purchaseprice = '\{purchasePrice}'\, Shop_Product_purchase_route = '\{purchaseRoute}'\, Shop_Product_stockcount = \'{stockCount}\', Shop_Product_purchasedate = \'{purchaseDate}\'"
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+        return redirect('/productlist/')
+    else:
+        context = {'data1' : id, 'data2' : select_all_product_code()}
+        return render(request, 'product_modify.html', context)
+
 def customer_add(request):
     if request.method == 'POST':
         name = request.POST.get('c_name')
@@ -53,9 +74,11 @@ def productadd(request):
         purchasePrice = request.POST.get('Shop_Product_purchaseprice')
         purchaseRoute = request.POST.get('Shop_Product_purchase_route')
         stockCount = request.POST.get('Shop_Product_stockcount')
+        purchaseDate = request.POST.get('Shop_Product_purchasedate')
         conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
         cur = conn.cursor()
-        sql = f"INSERT INTO shop_product(product_code, Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount) VALUES (\"{productType}\", \"{productName}\", \"{salePrice}\", \"{purchasePrice}\", \"{purchaseRoute}\", \"{stockCount}\")"
+        print(purchaseDate)
+        sql = f"INSERT INTO shop_product(product_code, Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount, Shop_Product_purchasedate) VALUES (\"{productType}\", \"{productName}\", \"{salePrice}\", \"{purchasePrice}\", \"{purchaseRoute}\", \"{stockCount}\", \"{purchaseDate}\")"
         cur.execute(sql)
         conn.commit()
         conn.close()
@@ -68,16 +91,18 @@ def productadd(request):
 def select_product_list():
     conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
     cur = conn.cursor()
-    cur.execute("SELECT Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchasedate, Shop_Product_purchase_route, Product_Code, Shop_Product_stockcount from shop_product")
+    cur.execute("SELECT Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchasedate, Shop_Product_purchase_route, Product_Code, Shop_Product_stockcount, Shop_Product_idx from shop_product")
     result = cur.fetchall()
     return_data = []
     for idx, value in enumerate(result):
         row = {'Product_name' : value[0],
-                       'Shop_Product_saleprice' : value[1],
-                       'Shop_Product_purchaseprice' : value[2],
-                       'Shop_Product_purchase_route' : value[3],
-                       'Product_Code' : value[4],
-                       'Shop_Product_stockcount' : value[5]}
+                'Shop_Product_saleprice' : value[1],
+                'Shop_Product_purchaseprice' : value[2],
+                'Shop_Product_purchasedate' : value[3],
+                'Shop_Product_purchase_route' : value[4],
+                'Product_Code' : value[5],
+                'Shop_Product_stockcount' : value[6],
+                'Shop_Product_idx' : value[7]}
         return_data.append(row)
     conn.close()
     return return_data
@@ -139,9 +164,6 @@ def customer_delete(request, c_idx):
     cur = conn.cursor()
     sql = f"DELETE FROM customer WHERE c_idx = {c_idx}"
     cur.execute(sql)
-    #테스트용 코드
-    row_count = cur.rowcount
-    print("업데이트 행 수 : ", row_count)
     conn.commit()
     conn.close()
     return redirect('/customerlist/')

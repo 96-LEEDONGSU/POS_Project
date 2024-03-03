@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  {% for i in data2 %}
+    {% if data1|add:"0" == i.c_idx|add:"0" %}
+    <form action="{% url 'myapp:product_modify'%}" method="POST" id ="modifyForm">
+      {% csrf_token %}
+        <input type="hidden" name="c_idx", value="{{i.c_idx}}"" id="c_idx"></input>
+        <label>이름</label>
+        <input type="text" class="form-control" name="c_name" id="c_name" value="{{i.c_name}}" style="width:300px"></input>
+        <label>핸드폰번호</label>
+        <input type="text" class="form-control" name="c_phone" id="c_phone" value="{{i.c_phone}}" style="width:300px"></input>
+        <label>주소</label>
+        <input type="text" class="form-control" name="c_address" id="c_address" value="{{i.c_address}}" style="width:300px"></input>
+        <label>메모</label>
+        <input type="text" class="form-control" name="c_memo" id="c_memo" value="{{i.c_memo}}" style="width:300px"></input>
+        <button type="submit" class="btn btn-primary" style="width:200px">수정</button>
+        <button type="reset" class="btn btn-primary" style="width:200px">되돌리기</button>
+        <button type="button" class="btn btn-primary" style="width:200px" onclick="goBack()">취소</button>
+    </form>
+  </div>
+  {% endif %}
+  {% endfor %}
+<script>
+  function goBack(){
+    window.history.back();
+  }
+
+  document.getElementById("modifyForm").addEventListener("submit", function(event) {
+    var confirmation = confirm("정말 수정하시겠습니까?");
+    if (!confirmation) {
+      event.preventDefault();
+    }
+  });
+</script>
+{% endblock %}
