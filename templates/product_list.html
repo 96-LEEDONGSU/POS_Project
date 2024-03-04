@@ -27,8 +27,7 @@
         <td>{{i.Shop_Product_purchase_route}}</td>
         <td>{{i.Product_Code}}</td>
         <td>{{i.Shop_Product_stockcount}}</td>
-        <td><a href="/modify/{{i.c_idx}}/">수정</td>
-        <td><a href="#" data-uri="{% url 'myapp:customer_delete' i.c_idx %}" class="delete">삭제</td>
+        <td><a href="/product_modify/{{i.Shop_Product_idx}}/">수정</td>
       </tr>
       {% endfor %}
     </tbody>

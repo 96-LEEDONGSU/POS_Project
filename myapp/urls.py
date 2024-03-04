@@ -15,5 +15,5 @@ urlpatterns = [
     path('customerlist', views.modifyMemberData, name='modifyMemberData'),
     path('add-member/', views.customer_add, name='customer_add'),
     path('customerdelete/<int:c_idx>/', views.customer_delete, name='customer_delete'),
-    path('modify_product/<id>/', views.product_modify, name='product_modify'),
+    path('product_modify/<int:id>/', views.product_modify, name='product_modify'),
 ]

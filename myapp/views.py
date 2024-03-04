@@ -31,6 +31,7 @@ def customer_modify(request, id):
 
 def product_modify(request, id):
     if request.method == 'POST':
+        product_idx = request.POST.get('Shop_product_idx')
         productType = request.POST.get('product_code')
         productName = request.POST.get('Product_name')
         salePrice = request.POST.get('Shop_Product_saleprice')
@@ -41,12 +42,13 @@ def product_modify(request, id):
         conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
         cur = conn.cursor()
         print(purchaseDate)
-        sql = f"UPDATE shop_product SET product_code = \'{productType}\', Product_name = \'{productName}\', Shop_Product_saleprice=\'{salePrice}\', Shop_Product_purchaseprice = '\{purchasePrice}'\, Shop_Product_purchase_route = '\{purchaseRoute}'\, Shop_Product_stockcount = \'{stockCount}\', Shop_Product_purchasedate = \'{purchaseDate}\'"
+        sql = f"UPDATE shop_product SET product_code = \'{productType}\', Product_name = \'{productName}\', Shop_Product_saleprice=\'{salePrice}\', Shop_Product_purchaseprice = '\{purchasePrice}'\, Shop_Product_purchase_route = '\{purchaseRoute}'\, Shop_Product_stockcount = \'{stockCount}\', Shop_Product_purchasedate = \'{purchaseDate}\' WHERE shop_product_idx = {product_idx}"
         cur.execute(sql)
         conn.commit()
         conn.close()
         return redirect('/productlist/')
     else:
+        print(id)
         context = {'data1' : id, 'data2' : select_all_product_code()}
         return render(request, 'product_modify.html', context)
 
@@ -77,7 +79,6 @@ def productadd(request):
         purchaseDate = request.POST.get('Shop_Product_purchasedate')
         conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
         cur = conn.cursor()
-        print(purchaseDate)
         sql = f"INSERT INTO shop_product(product_code, Product_name, Shop_Product_saleprice, Shop_Product_purchaseprice, Shop_Product_purchase_route, Shop_Product_stockcount, Shop_Product_purchasedate) VALUES (\"{productType}\", \"{productName}\", \"{salePrice}\", \"{purchasePrice}\", \"{purchaseRoute}\", \"{stockCount}\", \"{purchaseDate}\")"
         cur.execute(sql)
         conn.commit()
@@ -110,14 +111,16 @@ def select_product_list():
 def select_all_product_code():
     conn = pymysql.connect(host='localhost', user='root', password='635d0b4108', db='mydb', charset='utf8')
     cur = conn.cursor()
-    cur.execute("SELECT product_code, product_type from product_code")
+    cur.execute("SELECT shop_product_idx, product_name, shop_product_saleprice, shop_product_purchaseprice, shop_product_purchasedate, shop_product_purchase_route, product_code, shop_product_stockcount from shop_product")
     result = cur.fetchall()
     return_data = []
     for idx, value in enumerate(result):
-        row = {'productCode' : value[0], 'productType' : value[1]}
+        row = {'shop_product_idx' : value[0], 'product_name' : value[1], 'shop_product_saleprice' : value[2],
+               'shop_product_purchaseprice' : value[3], 'shop_product_purchasedate' : value[4], 
+               'shop_product_purchase_route' : value[5], 'product_code' : value[6], 
+               'shop_product_stockcount' : value[7]}
         return_data.append(row)
     conn.close()
-    print(return_data)
     return return_data
 
 
